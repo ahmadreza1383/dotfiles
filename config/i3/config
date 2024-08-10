@@ -30,8 +30,11 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id battery&
 
 # start i3 components
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- lock
 exec --no-startup-id nm-applet
+
+# custom adding with Ahmadreza1383
+exec_always "setxkbmap -model pc104 -layout us,ir -variant ,, -option grp:alt_shift_toggle"
 
 ### Shortcuts ###
 
@@ -189,6 +192,9 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+# Added by ahmadreza1383
+bindsym $mod+mod1+Right workspace right
+bindsym $mod+mod1+Left workspace right
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -232,7 +238,7 @@ bindsym $mod+r mode "resize"
 default_border pixel 2
 
 #border colors
-client.focused #343746 #343746 #F8F8F2 #343746 #343746
+#client.focused #343746 #343746 #F8F8F2 #343746 #343746
 client.focused_inactive #343746 #343746 #F8F8F2 #21222C #21222C
 client.unfocused #343746 #343746 #F8F8F2 #21222C #21222C
 

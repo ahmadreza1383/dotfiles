@@ -5,11 +5,25 @@ sudo apt install dialog -y
 PACKAGES_DIR="packages"
 
 phpactor_install() {
+  ## install php | if not exist
+  if wget https://www.php.net/distributions/php-8.3.10.tar.gz -P ~/Downloads/; then
+    sudo apt install libxml2-dev sqlite3 libsqlite3-dev libssl-dev
+    tar ~/Downloads/php-8.3.10.tar.gz
+    cd ~/Downloads/php-8.3.10
+    if ./configure --with-zlib --with-openssl; then
+      if make; then
+        sudo make install
+      fi
+    fi
+  fi
+
+  ###
   mkdir -p $PACKAGES_DIR/phpactor
   cd $PACKAGES_DIR/phpactor
-  curl -Lo phpactor.phar https://github.com/phpactor/phpactor/releases/latest/download/phpactor.phar
-  chmod a+x phpactor.phar
-  mv phpactor.phar ~/.local/bin/phpactor
+  if curl -Lo phpactor.phar https://github.com/phpactor/phpactor/releases/latest/download/phpactor.phar; then
+    chmod a+x phpactor.phar
+    mv phpactor.phar ~/.local/bin/phpactor
+  fi
 }
 
 neovim_install() {
@@ -33,6 +47,7 @@ choices=$(dialog --clear \
   6 "ghostwriter" ON \
   7 "phpactor" OFF \
   8 "neovim" ON \
+  9 "net-tools" ON \
   2>&1 >/dev/tty)
 
 pkg_manager=(sudo apt install -y)
@@ -49,5 +64,6 @@ for choise in $choices; do
   6) ${pkg_manager[@]} ghostwriter ;;
   7) phpactor_install ;;
   8) neovim_install ;;
+  9) ${pkg_manager[@]} net-tools ;;
   esac
 done

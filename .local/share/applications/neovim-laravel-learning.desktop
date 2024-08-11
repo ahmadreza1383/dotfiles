@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Neovim laravel learning
+Comment=Code Editing
+GenericName=Text Editor
+Exec=/home/ahmadreza/.local/bin/shell/neovim_laravel_learning.sh
+#alacritty -e /usr/bin/nvim /mnt/part1/projects/laravel/laravel11/example-app/ 
+#&& php /mnt/part1/projects/laravel/laravel11/example-app/artisan serve
+Icon=nvim
+Type=Application
+StartupNotify=false
+StartupWMClass=Code
+Categories=TextEditor;Development;IDE;
+MimeType=application/x-code-workspace;
+Actions=new-empty-window;
+Keywords=nvim;

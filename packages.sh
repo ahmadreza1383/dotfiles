@@ -34,6 +34,35 @@ neovim_install() {
   ln -s ~/.local/bin/nvim ~/.local/bin/vim
 }
 
+composer_install() {
+  php -v || exit 1
+  ##
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+  php composer-setup.php
+  php -r "unlink('composer-setup.php');"
+  ##
+  sudo mv composer.phar /usr/local/bin/composer
+}
+
+nekoray_install() {
+  wget https://github.com/MatsuriDayo/nekoray/releases/download/3.26/nekoray-3.26-2023-12-09-linux-x64.AppImage || exit 1
+  cp nekoray-3.26-2023-12-09-linux-x64.AppImage ~/.local/bin/nekoray
+  NEKORAY_DESKTOP_PATH= ~/.local/share/applications/nekoray.desktop
+  if [ ! -f $NEKORAY_DESKTOP_PATH ]; then
+    echo "
+      [Desktop Entry]
+      Name=nekoray
+      Comment=nekoray
+      Exec=~/.local/bin/nekoray
+      #Icon=/opt/nekoray/nekoray.png
+      Terminal=false
+      Type=Application
+      Categories=Network;Application;
+    " >$NEKORAY_DESKTOP_PATH
+  fi
+}
+
 choices=$(dialog --clear \
   --separate-output \
   --backtitle "Install packages" \
@@ -48,6 +77,8 @@ choices=$(dialog --clear \
   7 "phpactor" OFF \
   8 "neovim" ON \
   9 "net-tools" ON \
+  10 "composer" OFF \
+  11 "nekoray" OFF \
   2>&1 >/dev/tty)
 
 pkg_manager=(sudo apt install -y)
@@ -65,5 +96,7 @@ for choise in $choices; do
   7) phpactor_install ;;
   8) neovim_install ;;
   9) ${pkg_manager[@]} net-tools ;;
+  10) composer_install ;;
+  11) nekoray_install ;;
   esac
 done

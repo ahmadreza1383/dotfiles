@@ -22,7 +22,7 @@ system_update() {
 }
 install_pkgs() {
   echo -e "${green}[*] Installing packages with pacman.${no_color}"
-  sudo apt install -y acpi alsa-utils curl git pulseaudio xorg alacritty btop dunst feh mpc mpd ncmpcpp nemo neofetch papirus-icon-theme picom polybar ranger rofi scrot slop xclip zathura zsh i3 firefox-esr zathura-pdf-poppler
+  sudo apt install -y acpi alsa-utils curl git pulseaudio xorg alacritty btop dunst feh mpc mpd ncmpcpp nemo neofetch papirus-icon-theme picom polybar ranger rofi scrot slop xclip zathura zsh i3 firefox-esr zathura-pdf-poppler gedit
   #### Added by ahmadreza1383
   exec ./packages.sh
   #sudo apt install docker docker-compose
@@ -138,6 +138,11 @@ finishing() {
   nvim +PackerSync
 }
 
+ahmadreza1383_local_configs() {
+  echo -e "${green}[*] Copy ahmadreza1383 configs"
+  cp -Ra ./.local/* "$HOME/.local/"
+}
+
 cmd=(dialog --clear --separate-output --checklist "Select (with space) what script should do.\\nChecked options are required for proper installation, do not uncheck them if you do not know what you are doing." 26 86 16)
 options=(1 "System update" on
   2 "Install basic packages" on
@@ -153,7 +158,8 @@ options=(1 "System update" on
   12 "Install vsc theme" on
   13 "Install gtk theme" on
   14 "Install sddm with flower theme" off
-  15 "Make Light executable, set zsh as default shell, update nvim extensions." on)
+  15 "Make Light executable, set zsh as default shell, update nvim extensions." on
+  16 "Install ahmadreza1383 .local configs" on)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
 clear
@@ -175,5 +181,6 @@ for choice in $choices; do
   13) install_gtk_theme ;;
   14) install_sddm ;;
   15) finishing ;;
+  16) ahmadreza1383_local_configs ;;
   esac
 done

@@ -46,15 +46,20 @@ composer_install() {
 }
 
 nekoray_install() {
-  wget https://github.com/MatsuriDayo/nekoray/releases/download/3.26/nekoray-3.26-2023-12-09-linux-x64.AppImage || exit 1
-  cp nekoray-3.26-2023-12-09-linux-x64.AppImage ~/.local/bin/nekoray
-  NEKORAY_DESKTOP_PATH= ~/.local/share/applications/nekoray.desktop
+  NEKORAY_FILE=nekoray-3.26-2023-12-09-linux-x64.AppImage
+  if [ ! -f ./$NEKORAY_FILE ]; then
+    wget https://github.com/MatsuriDayo/nekoray/releases/download/3.26/ || exit 1
+  fi
+
+  cp $NEKORAY_FILE ~/.local/bin/nekoray
+  chmod 777 ~/.local/bin/nekoray
+  NEKORAY_DESKTOP_PATH=~/.local/share/applications/nekoray.desktop
   if [ ! -f $NEKORAY_DESKTOP_PATH ]; then
     echo "
       [Desktop Entry]
       Name=nekoray
       Comment=nekoray
-      Exec=~/.local/bin/nekoray
+      Exec=$HOME/.local/bin/nekoray
       #Icon=/opt/nekoray/nekoray.png
       Terminal=false
       Type=Application

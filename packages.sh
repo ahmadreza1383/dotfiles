@@ -68,6 +68,13 @@ nekoray_install() {
   fi
 }
 
+qemu_install() {
+  echo "Installing qemu"
+  sudo apt install -y qemu-utils virt-manager qemu-system || (echo "Apt cannot install qemu! " && exit 1)
+  sudo usermod -aG libvirt,libvirt-qemu $USER || (echo "$USER cannot add to libvirt-qemu and libvirt groups" && exit 1)
+  echo "qemu and virtual manager is installed"
+}
+
 choices=$(dialog --clear \
   --separate-output \
   --backtitle "Install packages" \
@@ -84,6 +91,7 @@ choices=$(dialog --clear \
   9 "net-tools" ON \
   10 "composer" OFF \
   11 "nekoray" OFF \
+  12 "qemu & virtual manager (GUI)" OFF \
   2>&1 >/dev/tty)
 
 pkg_manager=(sudo apt install -y)
@@ -103,5 +111,6 @@ for choise in $choices; do
   9) ${pkg_manager[@]} net-tools ;;
   10) composer_install ;;
   11) nekoray_install ;;
+  12) qemu_install ;;
   esac
 done
